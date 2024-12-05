@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 05, 2024 at 02:50 AM
+-- Generation Time: Dec 05, 2024 at 03:24 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -94,13 +94,34 @@ CREATE TABLE `order_items` (
 CREATE TABLE `products` (
   `product_id` int(11) NOT NULL,
   `product_name` varchar(100) NOT NULL,
-  `quantity` int(11) NOT NULL,
+  `stock` int(11) NOT NULL,
   `price` decimal(10,2) NOT NULL,
   `photo_1` varchar(255) DEFAULT NULL,
   `photo_2` varchar(255) DEFAULT NULL,
   `description` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`product_id`, `product_name`, `stock`, `price`, `photo_1`, `photo_2`, `description`, `created_at`) VALUES
+(1, 'FLOW T-SHIRT', 200, 68.00, 'flow_white_tshirt.png', 'flow_black_tshirt.png', NULL, '2024-12-05 02:09:54'),
+(2, 'FLOW LONG SLEEVE', 200, 82.00, 'flow_white_longsleeve.png', 'flow_black_longsleeve.png', NULL, '2024-12-05 02:09:54'),
+(3, 'FLOW HOODIE WHITE VER', 200, 50.00, 'flow_white_hoodie_front.png', 'flow_white_hoodie_back.png', NULL, '2024-12-05 02:09:54'),
+(4, 'FLOW HOODIE BLACK VER', 200, 50.00, 'flow_black_hoodie_front.png', 'flow_black_hoodie_back.png', NULL, '2024-12-05 02:09:54'),
+(5, 'FLOW CAP', 200, 46.00, 'flow_white_cap.png', 'flow_black_cap.png', NULL, '2024-12-05 02:09:54'),
+(6, 'X-PRESS T-SHIRT', 200, 68.00, 'xpress_white_tshirt.png', NULL, NULL, '2024-12-05 02:13:56'),
+(7, 'HAI! DESSUU! T-SHIRT', 200, 68.00, 'haidessuu_white_tshirt.png', 'haidessuu_black_tshirt.png', NULL, '2024-12-05 02:13:56'),
+(8, 'X-PRESS LONG SLEEVE', 200, 82.00, 'xpress_white_longsleeve.png', 'xpress_black_longsleeve.png', NULL, '2024-12-05 02:14:08'),
+(9, 'HAI! DESSUU! LONG SLEEVE', 200, 82.00, 'haidessuu_white_longsleeve.png', 'haidessuu_black_longsleeve.png', NULL, '2024-12-05 02:14:08'),
+(10, 'X-PRESS HOODIE WHITE VER', 200, 50.00, 'xpress_white_hoodie_front.png', 'xpress_white_hoodie_back.png', NULL, '2024-12-05 02:14:08'),
+(11, 'X-PRESS HOODIE BLACK VER', 200, 50.00, 'xpress_black_hoodie_front.png', 'xpress_black_hoodie_back.png', NULL, '2024-12-05 02:14:08'),
+(12, 'HAI! DESSUU! HOODIE WHITE VER', 200, 50.00, 'haidessuu_white_hoodie_front.png', 'haidessuu_white_hoodie_back.png', NULL, '2024-12-05 02:14:08'),
+(13, 'HAI! DESSUU! HOODIE BLACK VER', 200, 50.00, 'haidessuu_black_hoodie_front.png', 'haidessuu_black_hoodie_back.png', NULL, '2024-12-05 02:14:08'),
+(14, 'X-PRESS CAP', 200, 46.00, 'xpress_white_cap.png', 'xpress_black_cap.png', NULL, '2024-12-05 02:14:08'),
+(15, 'HAI! DESSUU! CAP', 200, 46.00, 'haidessuu_white_cap.png', 'haidessuu_black_cap.png', NULL, '2024-12-05 02:14:08');
 
 -- --------------------------------------------------------
 
@@ -113,9 +134,17 @@ CREATE TABLE `users` (
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
   `level` enum('admin','customer') NOT NULL,
-  `email` varchar(100) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `username`, `password`, `level`, `created_at`) VALUES
+(1, 'admin1', '12345678', 'admin', '2024-12-05 01:56:25'),
+(2, 'flinrzqlh', 'AkunDrippy', 'customer', '2024-12-05 01:56:25'),
+(3, 'nick69', 'nick69drippy', 'customer', '2024-12-05 01:58:38');
 
 --
 -- Indexes for dumped tables
@@ -195,13 +224,13 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables

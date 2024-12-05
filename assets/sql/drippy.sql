@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 05, 2024 at 03:24 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Dec 05, 2024 at 04:33 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,20 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `drippy`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `cart`
---
-
-CREATE TABLE `cart` (
-  `cart_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `added_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -67,22 +53,12 @@ INSERT INTO `chatbot` (`chatbot_id`, `question`, `answer`) VALUES
 CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `total_price` decimal(10,2) NOT NULL,
-  `order_date` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `order_items`
---
-
-CREATE TABLE `order_items` (
-  `order_item_id` int(11) NOT NULL,
-  `order_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
-  `price` decimal(10,2) NOT NULL
+  `total_price` decimal(10,2) NOT NULL,
+  `status` enum('pending','completed','canceled') DEFAULT 'pending',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -94,34 +70,34 @@ CREATE TABLE `order_items` (
 CREATE TABLE `products` (
   `product_id` int(11) NOT NULL,
   `product_name` varchar(100) NOT NULL,
-  `stock` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
   `price` decimal(10,2) NOT NULL,
-  `photo_1` varchar(255) DEFAULT NULL,
-  `photo_2` varchar(255) DEFAULT NULL,
-  `description` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `photo_1` varchar(100) DEFAULT NULL,
+  `photo_2` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`product_id`, `product_name`, `stock`, `price`, `photo_1`, `photo_2`, `description`, `created_at`) VALUES
-(1, 'FLOW T-SHIRT', 200, 68.00, 'flow_white_tshirt.png', 'flow_black_tshirt.png', NULL, '2024-12-05 02:09:54'),
-(2, 'FLOW LONG SLEEVE', 200, 82.00, 'flow_white_longsleeve.png', 'flow_black_longsleeve.png', NULL, '2024-12-05 02:09:54'),
-(3, 'FLOW HOODIE WHITE VER', 200, 50.00, 'flow_white_hoodie_front.png', 'flow_white_hoodie_back.png', NULL, '2024-12-05 02:09:54'),
-(4, 'FLOW HOODIE BLACK VER', 200, 50.00, 'flow_black_hoodie_front.png', 'flow_black_hoodie_back.png', NULL, '2024-12-05 02:09:54'),
-(5, 'FLOW CAP', 200, 46.00, 'flow_white_cap.png', 'flow_black_cap.png', NULL, '2024-12-05 02:09:54'),
-(6, 'X-PRESS T-SHIRT', 200, 68.00, 'xpress_white_tshirt.png', NULL, NULL, '2024-12-05 02:13:56'),
-(7, 'HAI! DESSUU! T-SHIRT', 200, 68.00, 'haidessuu_white_tshirt.png', 'haidessuu_black_tshirt.png', NULL, '2024-12-05 02:13:56'),
-(8, 'X-PRESS LONG SLEEVE', 200, 82.00, 'xpress_white_longsleeve.png', 'xpress_black_longsleeve.png', NULL, '2024-12-05 02:14:08'),
-(9, 'HAI! DESSUU! LONG SLEEVE', 200, 82.00, 'haidessuu_white_longsleeve.png', 'haidessuu_black_longsleeve.png', NULL, '2024-12-05 02:14:08'),
-(10, 'X-PRESS HOODIE WHITE VER', 200, 50.00, 'xpress_white_hoodie_front.png', 'xpress_white_hoodie_back.png', NULL, '2024-12-05 02:14:08'),
-(11, 'X-PRESS HOODIE BLACK VER', 200, 50.00, 'xpress_black_hoodie_front.png', 'xpress_black_hoodie_back.png', NULL, '2024-12-05 02:14:08'),
-(12, 'HAI! DESSUU! HOODIE WHITE VER', 200, 50.00, 'haidessuu_white_hoodie_front.png', 'haidessuu_white_hoodie_back.png', NULL, '2024-12-05 02:14:08'),
-(13, 'HAI! DESSUU! HOODIE BLACK VER', 200, 50.00, 'haidessuu_black_hoodie_front.png', 'haidessuu_black_hoodie_back.png', NULL, '2024-12-05 02:14:08'),
-(14, 'X-PRESS CAP', 200, 46.00, 'xpress_white_cap.png', 'xpress_black_cap.png', NULL, '2024-12-05 02:14:08'),
-(15, 'HAI! DESSUU! CAP', 200, 46.00, 'haidessuu_white_cap.png', 'haidessuu_black_cap.png', NULL, '2024-12-05 02:14:08');
+INSERT INTO `products` (`product_id`, `product_name`, `quantity`, `price`, `photo_1`, `photo_2`, `created_at`, `updated_at`) VALUES
+(1, 'FLOW T-SHIRT', 200, 68.00, 'flow_white_tshirt.png', 'flow_black_tshirt.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
+(2, 'FLOW LONG SLEEVE', 200, 82.00, 'flow_white_longsleeve.png', 'flow_black_longsleeve.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
+(3, 'FLOW HOODIE WHITE VER', 200, 50.00, 'flow_white_hoodie_front.png', 'flow_white_hoodie_back.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
+(4, 'FLOW HOODIE BLACK VER', 200, 50.00, 'flow_black_hoodie_front.png', 'flow_black_hoodie_back.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
+(5, 'FLOW CAP', 200, 46.00, 'flow_white_cap.png', 'flow_black_cap.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
+(6, 'HAI! DESSUU! T-SHIRT', 200, 68.00, 'haidessuu_white_tshirt.png', 'haidessuu_black_tshirt.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
+(7, 'HAI! DESSUU! LONG SLEEVE', 200, 82.00, 'haidessuu_white_longsleeve.png', 'haidessuu_black_longsleeve.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
+(8, 'HAI! DESSUU! HOODIE WHITE VER', 200, 50.00, 'haidessuu_white_hoodie_front.png', 'haidessuu_white_hoodie_back.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
+(9, 'HAI! DESSUU! HOODIE BLACK VER', 200, 50.00, 'haidessuu_black_hoodie_front.png', 'haidessuu_black_hoodie_back.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
+(10, 'HAI! DESSUU! CAP', 200, 46.00, 'haidessuu_white_cap.png', 'haidessuu_black_cap.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
+(11, 'X-PRESS T-SHIRT', 200, 68.00, 'xpress_white_tshirt.png', 'xpress_black_tshirt.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
+(12, 'X-PRESS LONG SLEEVE', 200, 82.00, 'xpress_white_longsleeve.png', 'xpress_black_longsleeve.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
+(13, 'X-PRESS HOODIE WHITE VER', 200, 50.00, 'xpress_white_hoodie_front.png', 'xpress_white_hoodie_back.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
+(14, 'X-PRESS HOODIE BLACK VER', 200, 50.00, 'xpress_black_hoodie_front.png', 'xpress_black_hoodie_back.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
+(15, 'X-PRESS CAP', 200, 46.00, 'xpress_white_cap.png', 'xpress_black_cap.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23');
 
 -- --------------------------------------------------------
 
@@ -133,30 +109,22 @@ CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `level` enum('admin','customer') NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `level` enum('customer','admin') NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `password`, `level`, `created_at`) VALUES
-(1, 'admin1', '12345678', 'admin', '2024-12-05 01:56:25'),
-(2, 'flinrzqlh', 'AkunDrippy', 'customer', '2024-12-05 01:56:25'),
-(3, 'nick69', 'nick69drippy', 'customer', '2024-12-05 01:58:38');
+INSERT INTO `users` (`user_id`, `username`, `password`, `level`, `created_at`, `updated_at`) VALUES
+(1, 'flinrzqlh', 'flinrzqlh1093', 'customer', '2024-12-05 03:21:26', '2024-12-05 03:21:26'),
+(3, 'admin', 'admindrippy', 'admin', '2024-12-05 03:22:03', '2024-12-05 03:22:03');
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `cart`
---
-ALTER TABLE `cart`
-  ADD PRIMARY KEY (`cart_id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `product_id` (`product_id`);
 
 --
 -- Indexes for table `chatbot`
@@ -169,14 +137,7 @@ ALTER TABLE `chatbot`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`order_id`),
-  ADD KEY `user_id` (`user_id`);
-
---
--- Indexes for table `order_items`
---
-ALTER TABLE `order_items`
-  ADD PRIMARY KEY (`order_item_id`),
-  ADD KEY `order_id` (`order_id`),
+  ADD KEY `user_id` (`user_id`),
   ADD KEY `product_id` (`product_id`);
 
 --
@@ -189,18 +150,11 @@ ALTER TABLE `products`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`user_id`),
-  ADD UNIQUE KEY `username` (`username`);
+  ADD PRIMARY KEY (`user_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
-
---
--- AUTO_INCREMENT for table `cart`
---
-ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `chatbot`
@@ -213,12 +167,6 @@ ALTER TABLE `chatbot`
 --
 ALTER TABLE `orders`
   MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `order_items`
---
-ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -237,24 +185,11 @@ ALTER TABLE `users`
 --
 
 --
--- Constraints for table `cart`
---
-ALTER TABLE `cart`
-  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`);
-
---
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
-
---
--- Constraints for table `order_items`
---
-ALTER TABLE `order_items`
-  ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`),
-  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`);
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
+  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

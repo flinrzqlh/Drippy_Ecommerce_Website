@@ -18,9 +18,11 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$search = isset($_GET['search']) ? $_GET['search'] : '';
+$user_id = $_SESSION['user_id'];
 
-$sql = "SELECT * FROM products WHERE product_name LIKE '%$search%'";
+$sql = "SELECT orders.*, products.product_name, products.photo_1, products.photo_2 FROM orders 
+        JOIN products ON orders.product_id = products.product_id 
+        WHERE orders.user_id = '$user_id'";
 $result = $conn->query($sql);
 ?>
 
@@ -34,7 +36,7 @@ $result = $conn->query($sql);
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -76,12 +78,11 @@ $result = $conn->query($sql);
     <!-- Main Content -->
     <main class="bg-[#31AEFF] min-h-screen">
         <section class="px-10">
-            <!-- Title (Search) -->
+            <!-- Title (Order History) -->
             <h1 class="text-4xl text-align-left font-semibold text-white py-8 ml-10">Order History</h1>
-            <!-- Product List -->
+            <!-- Order List -->
             <?php if ($result->num_rows > 0): ?>
                 <?php while($row = $result->fetch_assoc()): ?>
-                    
                     <!-- Ordered Item Details -->
                     <div class="flex justify-between items-center bg-white p-5 rounded-lg shadow-[0_0_20px_rgba(0,0,0,0.25)] mb-5">
                         <!-- Product Image -->
@@ -99,22 +100,23 @@ $result = $conn->query($sql);
                         <!-- Order Details -->
                         <div class="w-2/3 pl-10">
                             <!-- Order ID -->
-                            <h2 class="text-4xl font-semibold mb-5">Order ID: <?php echo $row['product_name']; ?></h2>
+                            <h2 class="text-4xl font-semibold mb-5">Order ID: <?php echo $row['order_id']; ?></h2>
                             <!-- product name -->
                             <h2 class="text-3xl font-semibold mb-5"><?php echo $row['product_name']; ?></h2>
                             <!-- quantity the user bought -->
                             <p class="text-2xl font-normal"><?php echo $row['quantity']; ?> Pieces</p>
                             <!-- product price -->
-                            <p class="text-2xl font-normal">Price: $<?php echo $row['price']; ?></p>
+                            <p class="text-2xl font-normal">Total Price: $<?php echo $row['total_price']; ?></p>
                             <!-- Order Date -->
-                            <p class="text-2xl font-normal">Ordered at </p>
+                            <p class="text-2xl font-normal">Ordered at: <?php echo $row['order_date']; ?></p>
                             <div class="flex items-center mt-10">
-                                <button class="px-4 py-2 bg-[#31AEFF] text-white text-2xl rounded-lg shadow hover:bg-blue-600 tsransition-all duration-300">Print Invoice</button>
+                                <button onclick="window.print()" class="px-4 py-2 bg-[#31AEFF] text-white text-2xl rounded-lg shadow hover:bg-blue-600 transition-all duration-300">Print Invoice</button>
                             </div>
                         </div>
-
                     </div>
                 <?php endwhile; ?>
+            <?php else: ?>
+                <p class="text-white text-center mt-10 text-xl font-semibold">No Orders Found</p>
             <?php endif; ?>
         </section>
     </main>

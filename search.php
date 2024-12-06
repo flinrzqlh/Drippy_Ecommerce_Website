@@ -20,6 +20,27 @@ if ($conn->connect_error) {
 
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['order_now'])) {
+    $product_id = $_POST['product_id'];
+    $quantity = $_POST['quantity'];
+    $user_id = $_SESSION['user_id']; // Pastikan user_id diambil dari session
+
+    // Get product price
+    $sql = "SELECT price FROM products WHERE product_id='$product_id'";
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
+    $price = $row['price'];
+    $total_price = $price * $quantity;
+
+    // Insert order into orders table
+    $sql = "INSERT INTO orders (product_id, user_id, quantity, total_price) VALUES ('$product_id', '$user_id', '$quantity', '$total_price')";
+    if ($conn->query($sql) === TRUE) {
+        echo "Order placed successfully!";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+}
+
 $sql = "SELECT * FROM products WHERE product_name LIKE '%$search%'";
 $result = $conn->query($sql);
 ?>
@@ -34,7 +55,7 @@ $result = $conn->query($sql);
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -108,8 +129,11 @@ $result = $conn->query($sql);
                             <!-- product price -->
                             <p class="text-2xl font-normal">Price: $<?php echo $row['price']; ?></p>
                             <div class="flex items-center mt-10">
-                                <input type="number" min="1" value="1" class="w-16 p-2 text-2xl text-center border rounded-lg focus:outline-none">
-                                <button class="ml-3 px-4 py-2 bg-[#31AEFF] text-white text-2xl rounded-lg shadow hover:bg-blue-600 transition-all duration-300">Order Now</button>
+                                <form method="POST" action="search.php">
+                                    <input type="hidden" name="product_id" value="<?php echo $row['product_id']; ?>">
+                                    <input type="number" name="quantity" min="1" value="1" class="w-16 p-2 text-2xl text-center border rounded-lg focus:outline-none">
+                                    <button type="submit" name="order_now" class="ml-3 px-4 py-2 bg-[#31AEFF] text-white text-2xl rounded-lg shadow hover:bg-blue-600 transition-all duration-300">Order Now</button>
+                                </form>
                             </div>
                         </div>
                     </div>

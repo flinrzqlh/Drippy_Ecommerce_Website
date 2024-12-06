@@ -24,6 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $row = $result->fetch_assoc();
         if (password_verify($password, $row['password'])) {
             $_SESSION['username'] = $username;
+            $_SESSION['user_id'] = $row['user_id']; // Simpan user_id dalam session
             $_SESSION['level'] = $row['level'];
             if ($row['level'] == 'admin') {
                 header("Location: statistics.php");

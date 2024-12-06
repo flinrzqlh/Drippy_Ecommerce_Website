@@ -25,20 +25,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['order_now'])) {
     $quantity = $_POST['quantity'];
     $user_id = $_SESSION['user_id']; // Pastikan user_id diambil dari session
 
-    // Get product price
-    $sql = "SELECT price FROM products WHERE product_id='$product_id'";
+    // Get product price and current quantity
+    $sql = "SELECT price, quantity FROM products WHERE product_id='$product_id'";
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();
     $price = $row['price'];
+    $current_quantity = $row['quantity'];
     $total_price = $price * $quantity;
 
-    // Insert order into orders table
-    $sql = "INSERT INTO orders (product_id, user_id, quantity, total_price) VALUES ('$product_id', '$user_id', '$quantity', '$total_price')";
-    if ($conn->query($sql) === TRUE) {
-        $_SESSION['message'] = "Order placed successfully!";
-        $_SESSION['message_product_id'] = $product_id;
+    if ($quantity <= $current_quantity) {
+        // Insert order into orders table
+        $sql = "INSERT INTO orders (product_id, user_id, quantity, total_price) VALUES ('$product_id', '$user_id', '$quantity', '$total_price')";
+        if ($conn->query($sql) === TRUE) {
+            // Update product quantity
+            $new_quantity = $current_quantity - $quantity;
+            $sql = "UPDATE products SET quantity='$new_quantity' WHERE product_id='$product_id'";
+            $conn->query($sql);
+
+            $_SESSION['message'] = "Order placed successfully!";
+            $_SESSION['message_product_id'] = $product_id;
+        } else {
+            $_SESSION['message'] = "Error: " . $sql . "<br>" . $conn->error;
+            $_SESSION['message_product_id'] = $product_id;
+        }
     } else {
-        $_SESSION['message'] = "Error: " . $sql . "<br>" . $conn->error;
+        $_SESSION['message'] = "Not enough stock available.";
         $_SESSION['message_product_id'] = $product_id;
     }
     header("Location: search.php?search=" . urlencode($search));
@@ -90,9 +101,8 @@ $result = $conn->query($sql);
             <a href="orderhistory.php" class="p-2 rounded-lg bg-[#ffffff] transform transition-all duration-300 hover:scale-110 shadow-[0_0_20px_rgba(0,0,0,0.25)]">
                 <img src="assets/icon/orderhistoryicon.png" alt="order" class="w-10 h-10 md:w-12 md:h-12">
             </a>
-            
             <!-- Account -->
-            <a href="profile.php" class="p-2 rounded-lg bg-[#ffffff] transform transition-all duration-300 hover:scale-110 shadow-[0_0_20px_rgba(0,0,0,0.25)]">
+            <a href="profileuser.php" class="p-2 rounded-lg bg-[#ffffff] transform transition-all duration-300 hover:scale-110 shadow-[0_0_20px_rgba(0,0,0,0.25)]">
                 <img src="assets/icon/accounticon.png" alt="account" class="w-10 h-10 md:w-12 md:h-12">
             </a>
         </div>

@@ -78,22 +78,17 @@ $conn->close();
         </div>
         <!-- Navigation Buttons -->
         <div class="flex space-x-4">
-            <!-- Chatbot Button -->
-            <a href="chatbot.php" class="p-2 rounded-lg bg-[#ffffff] transform transition-all duration-300 hover:scale-110 shadow-[0_0_20px_rgba(0,0,0,0.25)]">
-                <img src="assets/icon/chatboticon.png" alt="chatbot" class="w-10 h-10 md:w-12 md:h-12">
+            <!-- Statistics -->
+            <a href="statistics.php" class="p-2 rounded-lg bg-[#ffffff] transform transition-all duration-300 hover:scale-110 shadow-[0_0_20px_rgba(0,0,0,0.25)]">
+                <img src="assets/icon/statisticsicon.png" alt="statistics" class="w-10 h-10 md:w-12 md:h-12">
             </a>
-            <!-- Search Button -->
-            <a href="search.php" class="p-2 rounded-lg bg-[#ffffff] transform transition-all duration-300 hover:scale-110 shadow-[0_0_20px_rgba(0,0,0,0.25)]">
-                <img src="assets/icon/searchicon.png" alt="search" class="w-10 h-10 md:w-12 md:h-12">
+            <!-- Edit Data -->
+            <a href="editdata.php" class="p-2 rounded-lg bg-[#ffffff] transform transition-all duration-300 hover:scale-110 shadow-[0_0_20px_rgba(0,0,0,0.25)]">
+                <img src="assets/icon/editicon.png" alt="editdata" class="w-10 h-10 md:w-12 md:h-12">
             </a>
-            <!-- Order History -->
-            <a href="orderhistory.php" class="p-2 rounded-lg bg-[#ffffff] transform transition-all duration-300 hover:scale-110 shadow-[0_0_20px_rgba(0,0,0,0.25)]">
-                <img src="assets/icon/orderhistoryicon.png" alt="order" class="w-10 h-10 md:w-12 md:h-12">
-            </a>
-            
             <!-- Account -->
-            <a href="profile.php" class="p-2 rounded-lg bg-[#ffffff] transform transition-all duration-300 hover:scale-110 shadow-[0_0_20px_rgba(0,0,0,0.25)]">
-                <img src="assets/icon/accounticon.png" alt="account" class="w-10 h-10 md:w-12 md:h-12">
+            <a href="profileadmin.php" class="p-2 rounded-lg bg-[#ffffff] transform transition-all duration-300 hover:scale-110 shadow-[0_0_20px_rgba(0,0,0,0.25)]">
+                <img src="assets/icon/accounticon.png" alt="profile" class="w-10 h-10 md:w-12 md:h-12">
             </a>
         </div>
     </nav>
@@ -109,7 +104,7 @@ $conn->close();
                 <?php if ($message): ?>
                     <p class="text-green-500 text-xl mb-5"><?php echo $message; ?></p>
                 <?php endif; ?>
-                <form method="POST" action="profile.php">
+                <form method="POST" action="profileadmin.php">
                     <div class="mb-4">
                         <label for="username" class="block text-gray-700 font-bold mb-2">Username</label>
                         <input type="text" id="username" name="username" class="border border-gray-300 px-3 py-2 rounded-md w-full" value="<?php echo $_SESSION['username']; ?>" required>

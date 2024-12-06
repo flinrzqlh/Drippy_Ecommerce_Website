@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit();
+}
 
 // Create connection
 $servername = "localhost";
@@ -13,14 +17,33 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$questions_answers = [];
-$sql = "SELECT question, answer FROM chatbot";
-$result = $conn->query($sql);
+$message = '';
 
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $questions_answers[$row['question']] = $row['answer'];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['save_changes'])) {
+    $new_username = $_POST['username'];
+    $new_password = $_POST['password'];
+    $user_id = $_SESSION['user_id'];
+
+    if (!empty($new_password)) {
+        $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+        $sql = "UPDATE users SET username='$new_username', password='$hashed_password' WHERE user_id='$user_id'";
+    } else {
+        $sql = "UPDATE users SET username='$new_username' WHERE user_id='$user_id'";
     }
+
+    if ($conn->query($sql) === TRUE) {
+        $_SESSION['username'] = $new_username;
+        $message = "Profile updated successfully!";
+    } else {
+        $message = "Error updating profile: " . $conn->error;
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
+    session_unset();
+    session_destroy();
+    header("Location: login.php");
+    exit();
 }
 
 $conn->close();
@@ -31,7 +54,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DRIPPY "Driplet" ChatBot</title>
+    <title>DRIPPY User Account</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,28 +63,6 @@ $conn->close();
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-        }
-        .chat-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
-        }
-        .chat-box {
-            max-height: 400px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-        }
-        .chat-message {
-            margin-bottom: 10px;
-        }
-        .chat-message.user {
-            text-align: right;
-        }
-        .chat-message.bot {
-            text-align: left;
         }
     </style>
 </head>
@@ -97,56 +98,32 @@ $conn->close();
     </nav>
 
     <!-- Main Content -->
-    <main class="bg-[#31AEFF] min-h-screen flex items-center justify-center">
-        <div class="chat-container">
-            <div class="chat-box" id="chat-box">
-                <!-- Chat messages will be appended here -->
+    <main class="bg-[#31AEFF] min-h-screen">
+        <section class="px-10">
+            <!-- Title (User Account) -->
+            <h1 class="text-4xl text-align-left font-semibold text-white py-8 ml-10">User Account</h1>
+
+            <!-- Profile Form -->
+            <div class="bg-white p-5 rounded-lg shadow-[0_0_20px_rgba(0,0,0,0.25)] mb-5">
+                <?php if ($message): ?>
+                    <p class="text-green-500 text-xl mb-5"><?php echo $message; ?></p>
+                <?php endif; ?>
+                <form method="POST" action="profileuser.php">
+                    <div class="mb-4">
+                        <label for="username" class="block text-gray-700 font-bold mb-2">Username</label>
+                        <input type="text" id="username" name="username" class="border border-gray-300 px-3 py-2 rounded-md w-full" value="<?php echo $_SESSION['username']; ?>" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="block text-gray-700 font-bold mb-2">New Password (leave blank to keep current password)</label>
+                        <input type="password" id="password" name="password" class="border border-gray-300 px-3 py-2 rounded-md w-full">
+                    </div>
+                    <div class="flex space-x-4">
+                        <button type="submit" name="save_changes" class="bg-[#31AEFF] text-white font-bold py-2 px-4 rounded-md w-full mt-5 hover:bg-[#040820]">Save Changes</button>
+                        <button type="submit" name="logout" class="bg-red-500 text-white font-bold py-2 px-4 rounded-md w-full mt-5 hover:bg-red-700">Logout</button>
+                    </div>
+                </form>
             </div>
-            <form id="chat-form">
-                <input type="text" id="user-input" class="border border-gray-300 px-3 py-2 rounded-md w-full" placeholder="Ask Driplet...">
-                <button type="submit" class="bg-[#050A30] text-white font-bold py-2 px-4 rounded-md w-full mt-2 hover:bg-[#040820]">Send</button>
-            </form>
-        </div>
+        </section>
     </main>
-
-    <script>
-        const questionsAnswers = <?php echo json_encode($questions_answers); ?>;
-        const chatBox = document.getElementById('chat-box');
-        const chatForm = document.getElementById('chat-form');
-        const userInput = document.getElementById('user-input');
-
-        chatForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const userQuestion = userInput.value.trim();
-            if (userQuestion === '') return;
-
-            // Display user question
-            const userMessage = document.createElement('div');
-            userMessage.classList.add('chat-message', 'user');
-            userMessage.textContent = userQuestion;
-            chatBox.appendChild(userMessage);
-
-            // Find the answer
-            let botAnswer = 'Sorry, I do not understand that question.';
-            for (const [question, answer] of Object.entries(questionsAnswers)) {
-                if (userQuestion.toLowerCase() === question.toLowerCase()) {
-                    botAnswer = answer;
-                    break;
-                }
-            }
-
-            // Display bot answer
-            const botMessage = document.createElement('div');
-            botMessage.classList.add('chat-message', 'bot');
-            botMessage.textContent = botAnswer;
-            chatBox.appendChild(botMessage);
-
-            // Scroll to the bottom of the chat box
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            // Clear the input field
-            userInput.value = '';
-        });
-    </script>
 </body>
 </html>

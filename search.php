@@ -65,10 +65,7 @@ $result = $conn->query($sql);
             <a href="orderhistory.php" class="p-2 rounded-lg bg-[#ffffff] transform transition-all duration-300 hover:scale-110 shadow-[0_0_20px_rgba(0,0,0,0.25)]">
                 <img src="assets/icon/orderhistoryicon.png" alt="order" class="w-10 h-10 md:w-12 md:h-12">
             </a>
-            <!-- Cart -->
-            <a href="shoppingcart.php" class="p-2 rounded-lg bg-[#ffffff] transform transition-all duration-300 hover:scale-110 shadow-[0_0_20px_rgba(0,0,0,0.25)]">
-                <img src="assets/icon/shoppingcarticon.png" alt="cart" class="w-10 h-10 md:w-12 md:h-12">
-            </a>
+            
             <!-- Account -->
             <a href="profile.php" class="p-2 rounded-lg bg-[#ffffff] transform transition-all duration-300 hover:scale-110 shadow-[0_0_20px_rgba(0,0,0,0.25)]">
                 <img src="assets/icon/accounticon.png" alt="account" class="w-10 h-10 md:w-12 md:h-12">
@@ -112,7 +109,7 @@ $result = $conn->query($sql);
                             <p class="text-2xl font-normal">Price: $<?php echo $row['price']; ?></p>
                             <div class="flex items-center mt-10">
                                 <input type="number" min="1" value="1" class="w-16 p-2 text-2xl text-center border rounded-lg focus:outline-none">
-                                <button class="ml-3 px-4 py-2 bg-[#31AEFF] text-white text-2xl rounded-lg shadow hover:bg-blue-600 transition-all duration-300">Add to Cart</button>
+                                <button class="ml-3 px-4 py-2 bg-[#31AEFF] text-white text-2xl rounded-lg shadow hover:bg-blue-600 transition-all duration-300">Order Now</button>
                             </div>
                         </div>
                     </div>

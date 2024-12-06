@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 06, 2024 at 01:14 AM
+-- Generation Time: Dec 06, 2024 at 04:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,23 +43,6 @@ INSERT INTO `chatbot` (`chatbot_id`, `question`, `answer`) VALUES
 (3, 'Do you restock sold-out items?', 'Popular items are often restocked, but availability may vary. Stay updated by following us on social media!'),
 (4, 'How can I place an order?', 'Simply browse our products, add your favorite items to the cart, and proceed to checkout. It\'s that easy!'),
 (5, 'Do I need an account to shop on Drippy?', 'Yes, you do need an account. This lets you track orders and enjoy a personalized experience.');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `orders`
---
-
-CREATE TABLE `orders` (
-  `order_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `total_price` decimal(10,2) NOT NULL,
-  `status` enum('pending','completed','canceled') DEFAULT 'pending',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -119,8 +102,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `username`, `password`, `level`, `created_at`, `updated_at`) VALUES
-(1, 'flinrzqlh', 'flinrzqlh1093', 'customer', '2024-12-05 03:21:26', '2024-12-05 03:21:26'),
-(3, 'admin', 'admindrippy', 'admin', '2024-12-05 03:22:03', '2024-12-05 03:22:03');
+(6, 'admin', '$2y$10$EE45WAx1Ml3ZRN3/UQPtgew8foiJEhekW0c1.4RYIpb28MLfo5Piq', 'admin', '2024-12-06 01:51:44', '2024-12-06 01:55:59'),
+(7, 'flinrzqlh', '$2y$10$Y2Q.H7QsgpgwwxJtH5RAB.cNK09duZfafyhgumolyQfTIZi8itj2m', 'customer', '2024-12-06 01:57:42', '2024-12-06 01:57:42');
 
 --
 -- Indexes for dumped tables
@@ -131,14 +114,6 @@ INSERT INTO `users` (`user_id`, `username`, `password`, `level`, `created_at`, `
 --
 ALTER TABLE `chatbot`
   ADD PRIMARY KEY (`chatbot_id`);
-
---
--- Indexes for table `orders`
---
-ALTER TABLE `orders`
-  ADD PRIMARY KEY (`order_id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `product_id` (`product_id`);
 
 --
 -- Indexes for table `products`
@@ -163,12 +138,6 @@ ALTER TABLE `chatbot`
   MODIFY `chatbot_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `orders`
---
-ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
@@ -178,18 +147,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `orders`
---
-ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`product_id`);
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

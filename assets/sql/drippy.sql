@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 05, 2024 at 04:33 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Dec 06, 2024 at 01:14 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -83,21 +83,21 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `product_name`, `quantity`, `price`, `photo_1`, `photo_2`, `created_at`, `updated_at`) VALUES
-(1, 'FLOW T-SHIRT', 200, 68.00, 'flow_white_tshirt.png', 'flow_black_tshirt.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
-(2, 'FLOW LONG SLEEVE', 200, 82.00, 'flow_white_longsleeve.png', 'flow_black_longsleeve.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
-(3, 'FLOW HOODIE WHITE VER', 200, 50.00, 'flow_white_hoodie_front.png', 'flow_white_hoodie_back.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
-(4, 'FLOW HOODIE BLACK VER', 200, 50.00, 'flow_black_hoodie_front.png', 'flow_black_hoodie_back.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
-(5, 'FLOW CAP', 200, 46.00, 'flow_white_cap.png', 'flow_black_cap.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
-(6, 'HAI! DESSUU! T-SHIRT', 200, 68.00, 'haidessuu_white_tshirt.png', 'haidessuu_black_tshirt.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
-(7, 'HAI! DESSUU! LONG SLEEVE', 200, 82.00, 'haidessuu_white_longsleeve.png', 'haidessuu_black_longsleeve.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
-(8, 'HAI! DESSUU! HOODIE WHITE VER', 200, 50.00, 'haidessuu_white_hoodie_front.png', 'haidessuu_white_hoodie_back.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
-(9, 'HAI! DESSUU! HOODIE BLACK VER', 200, 50.00, 'haidessuu_black_hoodie_front.png', 'haidessuu_black_hoodie_back.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
-(10, 'HAI! DESSUU! CAP', 200, 46.00, 'haidessuu_white_cap.png', 'haidessuu_black_cap.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
-(11, 'X-PRESS T-SHIRT', 200, 68.00, 'xpress_white_tshirt.png', 'xpress_black_tshirt.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
-(12, 'X-PRESS LONG SLEEVE', 200, 82.00, 'xpress_white_longsleeve.png', 'xpress_black_longsleeve.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
-(13, 'X-PRESS HOODIE WHITE VER', 200, 50.00, 'xpress_white_hoodie_front.png', 'xpress_white_hoodie_back.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
-(14, 'X-PRESS HOODIE BLACK VER', 200, 50.00, 'xpress_black_hoodie_front.png', 'xpress_black_hoodie_back.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23'),
-(15, 'X-PRESS CAP', 200, 46.00, 'xpress_white_cap.png', 'xpress_black_cap.png', '2024-12-05 03:27:23', '2024-12-05 03:27:23');
+(1, 'FLOW T-SHIRT', 200, 68.00, 'assets/products/flow_white_tshirt.png', 'assets/products/flow_black_tshirt.png', '2024-12-05 03:27:23', '2024-12-06 00:14:23'),
+(2, 'FLOW LONG SLEEVE', 200, 82.00, 'assets/products/flow_white_longsleeve.png', 'assets/products/flow_black_longsleeve.png', '2024-12-05 03:27:23', '2024-12-06 00:14:23'),
+(3, 'FLOW HOODIE WHITE VER', 200, 50.00, 'assets/products/flow_white_hoodie_front.png', 'assets/products/flow_white_hoodie_back.png', '2024-12-05 03:27:23', '2024-12-06 00:14:23'),
+(4, 'FLOW HOODIE BLACK VER', 200, 50.00, 'assets/products/flow_black_hoodie_front.png', 'assets/products/flow_black_hoodie_back.png', '2024-12-05 03:27:23', '2024-12-06 00:14:23'),
+(5, 'FLOW CAP', 200, 46.00, 'assets/products/flow_white_cap.png', 'assets/products/flow_black_cap.png', '2024-12-05 03:27:23', '2024-12-06 00:14:23'),
+(6, 'HAI! DESSUU! T-SHIRT', 200, 68.00, 'assets/products/haidessuu_white_tshirt.png', 'assets/products/haidessuu_black_tshirt.png', '2024-12-05 03:27:23', '2024-12-06 00:14:23'),
+(7, 'HAI! DESSUU! LONG SLEEVE', 200, 82.00, 'assets/products/haidessuu_white_longsleeve.png', 'assets/products/haidessuu_black_longsleeve.png', '2024-12-05 03:27:23', '2024-12-06 00:14:23'),
+(8, 'HAI! DESSUU! HOODIE WHITE VER', 200, 50.00, 'assets/products/haidessuu_white_hoodie_front.png', 'assets/products/haidessuu_white_hoodie_back.png', '2024-12-05 03:27:23', '2024-12-06 00:14:23'),
+(9, 'HAI! DESSUU! HOODIE BLACK VER', 200, 50.00, 'assets/products/haidessuu_black_hoodie_front.png', 'assets/products/haidessuu_black_hoodie_back.png', '2024-12-05 03:27:23', '2024-12-06 00:14:23'),
+(10, 'HAI! DESSUU! CAP', 200, 46.00, 'assets/products/haidessuu_white_cap.png', 'assets/products/haidessuu_black_cap.png', '2024-12-05 03:27:23', '2024-12-06 00:14:23'),
+(11, 'X-PRESS T-SHIRT', 200, 68.00, 'assets/products/xpress_white_tshirt.png', 'assets/products/xpress_black_tshirt.png', '2024-12-05 03:27:23', '2024-12-06 00:14:23'),
+(12, 'X-PRESS LONG SLEEVE', 200, 82.00, 'assets/products/xpress_white_longsleeve.png', 'assets/products/xpress_black_longsleeve.png', '2024-12-05 03:27:23', '2024-12-06 00:14:23'),
+(13, 'X-PRESS HOODIE WHITE VER', 200, 50.00, 'assets/products/xpress_white_hoodie_front.png', 'assets/products/xpress_white_hoodie_back.png', '2024-12-05 03:27:23', '2024-12-06 00:14:23'),
+(14, 'X-PRESS HOODIE BLACK VER', 200, 50.00, 'assets/products/xpress_black_hoodie_front.png', 'assets/products/xpress_black_hoodie_back.png', '2024-12-05 03:27:23', '2024-12-06 00:14:23'),
+(15, 'X-PRESS CAP', 200, 46.00, 'assets/products/xpress_white_cap.png', 'assets/products/xpress_black_cap.png', '2024-12-05 03:27:23', '2024-12-06 00:14:23');
 
 -- --------------------------------------------------------
 

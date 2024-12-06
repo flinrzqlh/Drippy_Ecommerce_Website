@@ -35,10 +35,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['order_now'])) {
     // Insert order into orders table
     $sql = "INSERT INTO orders (product_id, user_id, quantity, total_price) VALUES ('$product_id', '$user_id', '$quantity', '$total_price')";
     if ($conn->query($sql) === TRUE) {
-        echo "Order placed successfully!";
+        $_SESSION['message'] = "Order placed successfully!";
+        $_SESSION['message_product_id'] = $product_id;
     } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+        $_SESSION['message'] = "Error: " . $sql . "<br>" . $conn->error;
+        $_SESSION['message_product_id'] = $product_id;
     }
+    header("Location: search.php?search=" . urlencode($search));
+    exit();
 }
 
 $sql = "SELECT * FROM products WHERE product_name LIKE '%$search%'";
@@ -135,6 +139,11 @@ $result = $conn->query($sql);
                                     <button type="submit" name="order_now" class="ml-3 px-4 py-2 bg-[#31AEFF] text-white text-2xl rounded-lg shadow hover:bg-blue-600 transition-all duration-300">Order Now</button>
                                 </form>
                             </div>
+                            <!-- Display message if it exists for this product -->
+                            <?php if (isset($_SESSION['message']) && $_SESSION['message_product_id'] == $row['product_id']): ?>
+                                <p class="mt-5 text-xl text-green-500"><?php echo $_SESSION['message']; ?></p>
+                                <?php unset($_SESSION['message']); unset($_SESSION['message_product_id']); ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endwhile; ?>
